@@ -24,7 +24,8 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
       hasMessages: !!data.messages,
       hasData: !!data.data,
       hasMapping: !!data.mapping,
-      topLevelKeys: Object.keys(data),
+      topLevelKeys: Array.isArray(data) ? `Array with ${data.length} items` : Object.keys(data),
+      firstItemStructure: Array.isArray(data) && data.length > 0 ? Object.keys(data[0]) : null,
       messageCount: data.messages?.length || data.data?.length || (data.mapping ? Object.keys(data.mapping).length : 0)
     });
 
@@ -32,16 +33,33 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
     let messages: any[] = [];
     
     if (Array.isArray(data)) {
-      messages = data;
+      // Handle array of conversation objects
+      if (data.length > 0 && data[0].mapping) {
+        // ChatGPT export format: array containing objects with mapping
+        const allMessages: any[] = [];
+        data.forEach(conversation => {
+          if (conversation.mapping && typeof conversation.mapping === 'object') {
+            const mappingValues = Object.values(conversation.mapping) as any[];
+            const conversationMessages = mappingValues
+              .filter(item => item && item.message && item.message.content)
+              .map(item => item.message);
+            allMessages.push(...conversationMessages);
+          }
+        });
+        messages = allMessages;
+      } else {
+        // Direct array of messages
+        messages = data;
+      }
     } else if (data.messages && Array.isArray(data.messages)) {
       messages = data.messages;
     } else if (data.data && Array.isArray(data.data)) {
       messages = data.data;
     } else if (data.mapping && typeof data.mapping === 'object') {
-      // Handle ChatGPT export format with mapping structure
+      // Handle single ChatGPT export format with mapping structure
       const mappingValues = Object.values(data.mapping) as any[];
       messages = mappingValues
-        .filter(item => item && item.message)
+        .filter(item => item && item.message && item.message.content)
         .map(item => item.message);
     } else {
       // Try to find any array property that looks like messages
@@ -56,6 +74,8 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
     if (messages.length === 0) {
       throw new Error('No messages found in the conversation file');
     }
+
+    console.log(`Found ${messages.length} raw messages, parsing content...`);
 
     // Parse and validate messages
     const parsedMessages: ConversationMessage[] = messages
@@ -112,7 +132,7 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           messageTime = typeof msg.created_at === 'string' ? new Date(msg.created_at).getTime() / 1000 : msg.created_at;
         }
 
-        return {
+        const parsedMessage = {
           id: msg.id || `msg-${index}`,
           author: {
             role: messageRole
@@ -123,6 +143,18 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           },
           create_time: messageTime
         };
+
+        // Log first few messages for debugging
+        if (index < 3) {
+          console.log(`Message ${index}:`, {
+            originalMsg: msg,
+            extractedContent: messageContent,
+            extractedRole: messageRole,
+            hasContent: !!messageContent
+          });
+        }
+
+        return parsedMessage;
       })
       .filter(msg => {
         const hasContent = msg.content.parts.some((part: string) => part && part.trim().length > 0);
