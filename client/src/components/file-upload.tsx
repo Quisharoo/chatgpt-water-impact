@@ -76,7 +76,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
     <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your ChatGPT Conversation</h2>
-        <p className="text-slate-600">Upload your conversation.json file to analyze water consumption</p>
+        <p className="text-slate-700">Upload your conversation.json file to analyze water consumption</p>
       </div>
 
       {/* File Upload Zone */}
@@ -90,7 +90,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             : 'border-slate-300 hover:border-blue-400 hover:bg-blue-50'
         }`}
       >
-        <input {...getInputProps()} />
+        <input {...getInputProps()} aria-label="Upload conversation JSON file" />
         <div className="space-y-4">
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
             {isProcessing ? (
@@ -105,7 +105,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             ) : (
               <>
                 <p className="text-lg font-medium text-slate-700">Drop your conversation.json file here</p>
-                <p className="text-slate-500 mt-1">or click to browse</p>
+                <p className="text-slate-600 mt-1">or click to browse</p>
               </>
             )}
           </div>
@@ -121,7 +121,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       {isProcessing && (
         <div className="mt-6">
           <Progress value={progress} className="h-2" />
-          <p className="text-sm text-slate-600 mt-2">Processing your conversation data...</p>
+          <p className="text-sm text-slate-700 mt-2">Processing your conversation data...</p>
         </div>
       )}
 

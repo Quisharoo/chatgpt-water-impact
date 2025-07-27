@@ -134,7 +134,7 @@ ${data.dailyConsumption.map(d => `${d.date}: ${d.waterLiters.toFixed(1)}L (${d.m
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Export Your Data</h3>
-                <p className="text-slate-600">Download your water consumption analysis</p>
+                <p className="text-slate-700">Download your water consumption analysis</p>
               </div>
               <div className="flex space-x-3">
                 <Button 
