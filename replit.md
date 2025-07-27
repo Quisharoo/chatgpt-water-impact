@@ -4,6 +4,14 @@
 
 This is a React-based web application that analyzes the environmental impact of ChatGPT conversations by calculating water consumption. Users can upload their conversation JSON files to get insights about their AI usage's environmental footprint through interactive charts and comparisons.
 
+## Recent Changes (January 27, 2025)
+
+✓ Fixed ChatGPT conversation file parsing for standard export format
+✓ Enhanced water consumption chart with dual y-axes (water + query counts)
+✓ Implemented proper weekly and monthly data aggregation
+✓ Improved content extraction to handle empty message parts
+→ Application now successfully processes real ChatGPT conversation files
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

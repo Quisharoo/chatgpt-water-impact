@@ -18,16 +18,7 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
       throw new Error('Invalid JSON structure');
     }
 
-    // Debug logging to understand file structure
-    console.log('File structure detected:', {
-      isArray: Array.isArray(data),
-      hasMessages: !!data.messages,
-      hasData: !!data.data,
-      hasMapping: !!data.mapping,
-      topLevelKeys: Array.isArray(data) ? `Array with ${data.length} items` : Object.keys(data),
-      firstItemStructure: Array.isArray(data) && data.length > 0 ? Object.keys(data[0]) : null,
-      messageCount: data.messages?.length || data.data?.length || (data.mapping ? Object.keys(data.mapping).length : 0)
-    });
+
 
     // Extract messages from various possible structures
     let messages: any[] = [];
@@ -41,7 +32,15 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           if (conversation.mapping && typeof conversation.mapping === 'object') {
             const mappingValues = Object.values(conversation.mapping) as any[];
             const conversationMessages = mappingValues
-              .filter(item => item && item.message && item.message.content)
+              .filter(item => {
+                if (!item || !item.message) return false;
+                const msg = item.message;
+                // Check if message has actual content
+                if (msg.content && msg.content.parts && Array.isArray(msg.content.parts)) {
+                  return msg.content.parts.some((part: any) => part && typeof part === 'string' && part.trim().length > 0);
+                }
+                return !!msg.content;
+              })
               .map(item => item.message);
             allMessages.push(...conversationMessages);
           }
@@ -59,7 +58,15 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
       // Handle single ChatGPT export format with mapping structure
       const mappingValues = Object.values(data.mapping) as any[];
       messages = mappingValues
-        .filter(item => item && item.message && item.message.content)
+        .filter(item => {
+          if (!item || !item.message) return false;
+          const msg = item.message;
+          // Check if message has actual content
+          if (msg.content && msg.content.parts && Array.isArray(msg.content.parts)) {
+            return msg.content.parts.some((part: any) => part && typeof part === 'string' && part.trim().length > 0);
+          }
+          return !!msg.content;
+        })
         .map(item => item.message);
     } else {
       // Try to find any array property that looks like messages
@@ -75,7 +82,7 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
       throw new Error('No messages found in the conversation file');
     }
 
-    console.log(`Found ${messages.length} raw messages, parsing content...`);
+
 
     // Parse and validate messages
     const parsedMessages: ConversationMessage[] = messages
@@ -91,7 +98,8 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           if (typeof msg.content === 'string') {
             messageContent = msg.content;
           } else if (msg.content.parts && Array.isArray(msg.content.parts)) {
-            messageContent = msg.content.parts.filter((part: any) => part && typeof part === 'string').join(' ');
+            const validParts = msg.content.parts.filter((part: any) => part && typeof part === 'string' && part.trim().length > 0);
+            messageContent = validParts.join(' ');
           } else if (msg.content.text) {
             messageContent = msg.content.text;
           } else if (typeof msg.content === 'object' && msg.content !== null) {
@@ -112,6 +120,24 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           messageContent = String(msg.text);
         } else if (msg.body) {
           messageContent = String(msg.body);
+        }
+
+        // If still no content, but message has parts with actual content, try different approach
+        if (!messageContent && msg.content?.parts) {
+          const allParts = msg.content.parts;
+          if (Array.isArray(allParts) && allParts.length > 0) {
+            // Sometimes parts might be nested objects or have different structure
+            const extractedText = allParts
+              .map((part: any) => {
+                if (typeof part === 'string') return part;
+                if (part && typeof part === 'object' && part.text) return part.text;
+                if (part && typeof part === 'object' && part.content) return part.content;
+                return '';
+              })
+              .filter((text: string) => text && text.trim().length > 0)
+              .join(' ');
+            messageContent = extractedText;
+          }
         }
 
         // Extract role
@@ -144,15 +170,7 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
           create_time: messageTime
         };
 
-        // Log first few messages for debugging
-        if (index < 3) {
-          console.log(`Message ${index}:`, {
-            originalMsg: msg,
-            extractedContent: messageContent,
-            extractedRole: messageRole,
-            hasContent: !!messageContent
-          });
-        }
+
 
         return parsedMessage;
       })
