@@ -49,7 +49,9 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       }, 500);
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to process file');
+      console.error('File processing error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to process file';
+      setError(`${errorMessage}. Please ensure you're uploading a ChatGPT conversation export file.`);
       setIsProcessing(false);
       setProgress(0);
     }
