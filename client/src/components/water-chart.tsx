@@ -266,27 +266,44 @@ export default function WaterChart({ data }: WaterChartProps) {
             <CardTitle className="text-xl font-bold text-slate-900">Water Consumption & Query Analytics</CardTitle>
             <p className="text-slate-700">Track both water usage and conversation volume from your ChatGPT interactions</p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-slate-600">Time Period:</span>
-            <div className="flex space-x-2">
+          <div className="flex flex-col items-end gap-2">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+              Time Period
+            </label>
+            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200 shadow-sm">
               <Button
-                variant={viewMode === 'daily' ? 'default' : 'outline'}
+                variant={viewMode === 'daily' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('daily')}
+                className={`rounded-md px-4 transition-all ${
+                  viewMode === 'daily' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Daily
               </Button>
               <Button
-                variant={viewMode === 'weekly' ? 'default' : 'outline'}
+                variant={viewMode === 'weekly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('weekly')}
+                className={`rounded-md px-4 transition-all ${
+                  viewMode === 'weekly' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Weekly
               </Button>
               <Button
-                variant={viewMode === 'monthly' ? 'default' : 'outline'}
+                variant={viewMode === 'monthly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('monthly')}
+                className={`rounded-md px-4 transition-all ${
+                  viewMode === 'monthly' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Monthly
               </Button>
