@@ -39,7 +39,7 @@ describe('ImpactFooter', () => {
   });
 
   it('calls downloadCSV when Export CSV button is clicked', () => {
-    const downloadCSVSpy = vi.spyOn(downloadUtils, 'downloadCSV');
+    const downloadCSVSpy = vi.spyOn(downloadUtils, 'downloadCSV').mockImplementation(() => {});
     render(<ImpactFooter data={mockData} />);
     
     const exportCSVButton = screen.getByText('Export CSV');
@@ -53,10 +53,12 @@ describe('ImpactFooter', () => {
       ]),
       'chatgpt-water-impact.csv'
     );
+    
+    downloadCSVSpy.mockRestore();
   });
 
   it('calls downloadFile when Export Report button is clicked', () => {
-    const downloadFileSpy = vi.spyOn(downloadUtils, 'downloadFile');
+    const downloadFileSpy = vi.spyOn(downloadUtils, 'downloadFile').mockImplementation(() => {});
     render(<ImpactFooter data={mockData} />);
     
     const exportReportButton = screen.getByText('Export Report');
@@ -66,5 +68,7 @@ describe('ImpactFooter', () => {
       expect.stringContaining('ChatGPT Water Impact Analysis Report'),
       'chatgpt-water-impact-report.txt'
     );
+    
+    downloadFileSpy.mockRestore();
   });
 });
