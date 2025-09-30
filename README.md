@@ -63,7 +63,7 @@ npm i -g vercel
 vercel
 ```
 
-Or click: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Quisharoo/watermarkai)
+Or click: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Quisharoo/chatgpt-water-impact)
 
 Tech stack
 ---------
