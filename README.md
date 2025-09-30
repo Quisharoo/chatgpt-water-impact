@@ -5,7 +5,7 @@ A simple, visual tool to analyze the water consumption impact of your ChatGPT us
 
 ## 🚀 Live Demo
 
-**[View Live Demo →](https://watermarkai.vercel.app/)**
+**[View Live Demo →](https://chatgpt-water-impact.vercel.app/)**
 
 > Upload your ChatGPT data or click **"Try Sample Data"** to see instant analytics without any setup!
 
