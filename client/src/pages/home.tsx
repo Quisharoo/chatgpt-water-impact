@@ -3,8 +3,8 @@ import { Droplet } from "lucide-react";
 import FileUpload from "@/components/file-upload";
 import SummaryStats from "@/components/summary-stats";
 import WaterChart from "@/components/water-chart";
-import EnvironmentalComparisons from "@/components/environmental-comparisons";
 import Methodology from "@/components/methodology";
+import ImpactFooter from "@/components/impact-footer";
 import EducationalFooter from "@/components/educational-footer";
 import { WaterConsumptionData } from "@shared/schema";
 
@@ -41,12 +41,13 @@ export default function Home() {
           <div className="space-y-8 animate-in fade-in duration-500">
             <SummaryStats data={analysisData} />
             <WaterChart data={analysisData} />
-            <EnvironmentalComparisons data={analysisData} />
+            <Methodology />
+            <ImpactFooter data={analysisData} />
           </div>
         )}
 
-        {/* Methodology Section */}
-        <Methodology />
+        {/* Methodology Section - shown even without data */}
+        {!analysisData && <Methodology />}
 
         {/* Educational Footer */}
         <EducationalFooter />
