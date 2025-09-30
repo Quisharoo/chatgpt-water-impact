@@ -4,7 +4,7 @@ import { CloudUpload, FileText, AlertCircle, Sparkles, HelpCircle } from "lucide
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
@@ -138,29 +138,30 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       <div className="text-center mb-6 md:mb-8">
         <div className="flex items-center justify-center gap-2 mb-2">
           <h2 className="text-xl md:text-2xl font-bold text-slate-900">Upload Your ChatGPT Export</h2>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <Popover>
+            <PopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 md:h-8 md:w-8 p-0 hover:bg-slate-100 flex-shrink-0"
+                className="h-9 w-9 md:h-8 md:w-8 p-0 hover:bg-slate-100 flex-shrink-0 cursor-pointer"
                 aria-label="How to get your ChatGPT export"
+                type="button"
               >
                 <HelpCircle className="h-5 w-5 text-slate-400 hover:text-slate-600" />
               </Button>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-xs">
+            </PopoverTrigger>
+            <PopoverContent className="w-80" align="center">
               <div className="space-y-2">
                 <p className="font-semibold text-sm">How to get your ChatGPT data:</p>
-                <ol className="text-sm space-y-1 list-decimal list-inside">
+                <ol className="text-sm space-y-1 list-decimal list-inside text-slate-600">
                   <li>Open ChatGPT → Settings</li>
                   <li>Go to Data Controls → Export data</li>
                   <li>Check your email for the download link</li>
                   <li>Upload the .zip file here</li>
                 </ol>
               </div>
-            </TooltipContent>
-          </Tooltip>
+            </PopoverContent>
+          </Popover>
         </div>
         <p className="text-sm md:text-base text-slate-700 px-4 md:px-0">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
       </div>
