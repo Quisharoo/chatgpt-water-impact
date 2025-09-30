@@ -1,6 +1,7 @@
 {
-  "name": "rest-express",
+  "name": "chatgpt-water-impact-analyzer",
   "version": "1.0.0",
+  "description": "Analyze the water consumption impact of your ChatGPT usage",
   "type": "module",
   "license": "MIT",
   "scripts": {

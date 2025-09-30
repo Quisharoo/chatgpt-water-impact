@@ -1,12 +1,12 @@
-ChatGPT Water Footprint Analyzer
-================================
+ChatGPT Water Impact Analyzer
+==============================
 
-A simple, visual way to quantify the environmental water footprint of your ChatGPT usage. Drop in your ChatGPT export `.zip` (or `conversations.json`) and get instant insights.
+A simple, visual tool to analyze the water consumption impact of your ChatGPT usage. Drop in your ChatGPT export `.zip` (or `conversations.json`) and get instant insights into your environmental footprint.
 
 Why this exists
 ---------------
 
-Large AI models consume water indirectly through data center cooling and power generation. This project turns your personal ChatGPT history into practical stats and comparisons you can understand.
+Large language models consume water indirectly through data center cooling and power generation. This project turns your personal ChatGPT conversation history into practical water consumption stats and relatable comparisons you can understand.
 
 What it does
 ------------

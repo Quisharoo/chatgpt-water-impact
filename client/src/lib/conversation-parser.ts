@@ -199,7 +199,7 @@ export function parseConversationFile(jsonContent: string): ParsedConversation {
 
   } catch (error) {
     if (error instanceof SyntaxError) {
-      throw new Error('Invalid JSON file. Please ensure you uploaded a valid conversation.json file.');
+      throw new Error('Invalid JSON file. Please ensure you uploaded a valid ChatGPT conversation export file.');
     }
     throw error;
   }

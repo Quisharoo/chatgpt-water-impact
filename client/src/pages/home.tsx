@@ -24,8 +24,8 @@ export default function Home() {
               <Droplet className="text-white text-lg water-droplet-animation" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">ChatGPT Water Footprint</h1>
-              <p className="text-slate-700 text-sm">Analyze the environmental impact of your AI conversations</p>
+              <h1 className="text-2xl font-bold text-slate-900">ChatGPT Water Impact Analyzer</h1>
+              <p className="text-slate-700 text-sm">Analyze the water consumption of your ChatGPT conversations</p>
             </div>
           </div>
         </div>
