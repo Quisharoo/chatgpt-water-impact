@@ -3,6 +3,14 @@ ChatGPT Water Impact Analyzer
 
 A simple, visual tool to analyze the water consumption impact of your ChatGPT usage. Drop in your ChatGPT export `.zip` (or `conversations.json`) and get instant insights into your environmental footprint.
 
+## 🖼️ Screenshot
+
+![ChatGPT Water Impact Analyzer Screenshot](.github/assets/screenshot.png)
+
+*Upload your ChatGPT export and instantly see your water consumption visualized with meaningful comparisons and analytics*
+
+> **Note:** Don't have your ChatGPT data? Try the **"Try Sample Data"** button to see a live demo!
+
 Why this exists
 ---------------
 
