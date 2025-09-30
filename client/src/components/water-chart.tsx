@@ -264,7 +264,7 @@ export default function WaterChart({ data }: WaterChartProps) {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-xl font-bold text-slate-900">Water Consumption & Query Analytics</CardTitle>
-            <p className="text-slate-600">Track both water usage and conversation volume from your ChatGPT interactions</p>
+            <p className="text-slate-700">Track both water usage and conversation volume from your ChatGPT interactions</p>
           </div>
           <div className="flex space-x-2">
             <Button
