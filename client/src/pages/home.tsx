@@ -4,6 +4,7 @@ import FileUpload from "@/components/file-upload";
 import SummaryStats from "@/components/summary-stats";
 import WaterChart from "@/components/water-chart";
 import EnvironmentalComparisons from "@/components/environmental-comparisons";
+import Methodology from "@/components/methodology";
 import EducationalFooter from "@/components/educational-footer";
 import { WaterConsumptionData } from "@shared/schema";
 
@@ -43,6 +44,9 @@ export default function Home() {
             <EnvironmentalComparisons data={analysisData} />
           </div>
         )}
+
+        {/* Methodology Section */}
+        <Methodology />
 
         {/* Educational Footer */}
         <EducationalFooter />
