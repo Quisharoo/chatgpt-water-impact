@@ -275,7 +275,7 @@ export default function WaterChart({ data }: WaterChartProps) {
                 variant={viewMode === 'daily' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('daily')}
-                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base active:scale-[0.98] touch-manipulation ${
                   viewMode === 'daily' 
                     ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
                     : 'hover:bg-slate-200 text-slate-600'
@@ -287,7 +287,7 @@ export default function WaterChart({ data }: WaterChartProps) {
                 variant={viewMode === 'weekly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('weekly')}
-                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base active:scale-[0.98] touch-manipulation ${
                   viewMode === 'weekly' 
                     ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
                     : 'hover:bg-slate-200 text-slate-600'
@@ -299,7 +299,7 @@ export default function WaterChart({ data }: WaterChartProps) {
                 variant={viewMode === 'monthly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('monthly')}
-                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base active:scale-[0.98] touch-manipulation ${
                   viewMode === 'monthly' 
                     ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
                     : 'hover:bg-slate-200 text-slate-600'

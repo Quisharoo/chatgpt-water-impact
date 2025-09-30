@@ -4,10 +4,12 @@ import { CloudUpload, FileText, AlertCircle, Sparkles, HelpCircle } from "lucide
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
+import PrivacyIndicator from "@/components/privacy-indicator";
+import { useToast } from "@/hooks/use-toast";
 import JSZip from "jszip";
 import sampleData from "@/assets/sample-conversation.json";
 
@@ -16,9 +18,11 @@ interface FileUploadProps {
 }
 
 export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
+  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [processingComplete, setProcessingComplete] = useState(false);
 
   const processFile = useCallback(async (file: File) => {
     setIsProcessing(true);
@@ -66,17 +70,30 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       // Complete analysis
       setTimeout(() => {
         setIsProcessing(false);
+        setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        toast({
+          title: "Analysis Complete",
+          description: "Your data was processed locally—nothing was transmitted.",
+        });
+        // Reset the complete indicator after a delay
+        setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
 
     } catch (err) {
       console.error('File processing error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to process file';
+      const errorMessage = err instanceof Error ? err.message : 'Local processing failed';
       setError(`${errorMessage}. Please ensure you're uploading a ChatGPT export ZIP or conversations.json.`);
+      toast({
+        title: "Processing Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
       setIsProcessing(false);
       setProgress(0);
+      setProcessingComplete(false);
     }
-  }, [onAnalysisComplete]);
+  }, [onAnalysisComplete, toast]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -102,16 +119,28 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
 
       setTimeout(() => {
         setIsProcessing(false);
+        setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        toast({
+          title: "Sample Data Loaded",
+          description: "Try out the analysis with example ChatGPT conversation data.",
+        });
+        setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
     } catch (err) {
       console.error('Sample data processing error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to load sample data';
       setError(errorMessage);
+      toast({
+        title: "Failed to Load Sample Data",
+        description: errorMessage,
+        variant: "destructive",
+      });
       setIsProcessing(false);
       setProgress(0);
+      setProcessingComplete(false);
     }
-  }, [onAnalysisComplete]);
+  }, [onAnalysisComplete, toast]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -129,29 +158,30 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       <div className="text-center mb-6 md:mb-8">
         <div className="flex items-center justify-center gap-2 mb-2">
           <h2 className="text-xl md:text-2xl font-bold text-slate-900">Upload Your ChatGPT Export</h2>
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <Popover>
+            <PopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 md:h-8 md:w-8 p-0 hover:bg-slate-100 flex-shrink-0"
+                className="h-9 w-9 md:h-8 md:w-8 p-0 hover:bg-slate-100 flex-shrink-0 cursor-pointer"
                 aria-label="How to get your ChatGPT export"
+                type="button"
               >
                 <HelpCircle className="h-5 w-5 text-slate-400 hover:text-slate-600" />
               </Button>
-            </TooltipTrigger>
-            <TooltipContent className="max-w-xs">
+            </PopoverTrigger>
+            <PopoverContent className="w-80" align="center">
               <div className="space-y-2">
                 <p className="font-semibold text-sm">How to get your ChatGPT data:</p>
-                <ol className="text-sm space-y-1 list-decimal list-inside">
+                <ol className="text-sm space-y-1 list-decimal list-inside text-slate-600">
                   <li>Open ChatGPT → Settings</li>
                   <li>Go to Data Controls → Export data</li>
                   <li>Check your email for the download link</li>
                   <li>Upload the .zip file here</li>
                 </ol>
               </div>
-            </TooltipContent>
-          </Tooltip>
+            </PopoverContent>
+          </Popover>
         </div>
         <p className="text-sm md:text-base text-slate-700 px-4 md:px-0">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
       </div>
@@ -178,7 +208,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
           </div>
           <div>
             {isProcessing ? (
-              <p className="text-base md:text-lg font-medium text-slate-700">Processing your file...</p>
+              <p className="text-base md:text-lg font-medium text-slate-700">Processing locally in your browser...</p>
             ) : (
               <>
                 <p className="text-base md:text-lg font-medium text-slate-700 px-4">Drop your ChatGPT export .zip or conversations.json here</p>
@@ -187,7 +217,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             )}
           </div>
           {!isProcessing && (
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] px-6 text-base font-semibold">
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] px-6 text-base font-semibold active:scale-[0.98] transition-transform touch-manipulation">
               Choose File
             </Button>
           )}
@@ -198,9 +228,12 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       {isProcessing && (
         <div className="mt-6">
           <Progress value={progress} className="h-2" />
-          <p className="text-sm text-slate-700 mt-2">Processing your conversation data...</p>
+          <p className="text-sm text-slate-700 mt-2">Processing locally... No data is being uploaded.</p>
         </div>
       )}
+
+      {/* Privacy Indicator */}
+      <PrivacyIndicator isProcessing={isProcessing} processingComplete={processingComplete} />
 
       {/* Error Alert */}
       {error && (
@@ -218,7 +251,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             <Button
               variant="outline"
               onClick={loadSampleData}
-              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 active:scale-[0.98] transition-transform touch-manipulation min-h-[44px]"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Try Sample Data

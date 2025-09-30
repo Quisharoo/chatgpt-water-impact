@@ -3,6 +3,10 @@ ChatGPT Water Impact Analyzer
 
 A simple, visual tool to analyze the water consumption impact of your ChatGPT usage. Drop in your ChatGPT export `.zip` (or `conversations.json`) and get instant insights into your environmental footprint.
 
+## 🔒 Privacy First
+
+**Your data never leaves your device.** This app runs 100% in your browser—no uploads, no servers, no tracking. All file processing, parsing, and analysis happens locally using JavaScript. You can verify this yourself by checking your browser's Network tab (F12) or even running the app offline.
+
 ## 🚀 Live Demo
 
 **[View Live Demo →](https://chatgpt-water-impact.vercel.app/)**
@@ -29,6 +33,39 @@ What it does
 - Visualizes daily/weekly/monthly trends
 - Provides relatable comparisons (e.g., showers, glasses of water)
 - Works with ChatGPT export `.zip` or `conversations.json`
+- **Processes everything locally in your browser—no data transmission**
+
+How Privacy Works
+-----------------
+
+### Client-Side Only Architecture
+
+All data processing happens in your browser:
+
+1. **File Reading**: When you select a file, it's read directly into browser memory using the `FileReader` API
+2. **ZIP Extraction**: If you upload a `.zip`, it's extracted client-side using JSZip
+3. **Parsing**: Your `conversations.json` is parsed using JavaScript—no server involved
+4. **Calculations**: Water consumption estimates are calculated locally
+5. **Visualization**: Charts are generated in your browser using Chart.js
+
+### Verify It Yourself
+
+**Option 1: Network Monitoring**
+- Open Developer Tools (F12)
+- Go to the Network tab
+- Upload your file
+- You'll see only static asset loads—no POST/PUT requests with your data
+
+**Option 2: Offline Test**
+- Load the page
+- Disconnect from the internet
+- Upload and analyze your file
+- Everything still works because it's 100% local
+
+**Option 3: Review the Code**
+- Check `client/src/lib/conversation-parser.ts` for parsing logic
+- Check `client/src/lib/water-calculator.ts` for calculation logic
+- No server endpoints handle user data
 
 Getting your ChatGPT data
 -------------------------
@@ -68,10 +105,19 @@ Or click: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/
 Tech stack
 ---------
 
-- React + TypeScript, Vite, Tailwind, shadcn/ui
+**Client-Side (Where Your Data Is Processed):**
+- React + TypeScript for the UI
+- Vite for build tooling
+- Tailwind CSS + shadcn/ui for styling
 - Chart.js for visualizations
-- JSZip for in-browser ZIP parsing
-- Express (server), Drizzle ORM, Neon (optional server features)
+- JSZip for client-side ZIP parsing
+- FileReader API for local file access
+
+**Server-Side (Static Hosting Only):**
+- Express serves the static built files
+- No server-side data processing
+- No database storage of user data
+- Optional features use Drizzle ORM + Neon (not for user uploads)
 
 Background
 ---------

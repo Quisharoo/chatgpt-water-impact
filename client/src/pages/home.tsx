@@ -6,6 +6,8 @@ import WaterChart from "@/components/water-chart";
 import Methodology from "@/components/methodology";
 import ImpactFooter from "@/components/impact-footer";
 import EducationalFooter from "@/components/educational-footer";
+import PrivacyBanner from "@/components/privacy-banner";
+import PrivacyFAQ from "@/components/privacy-faq";
 import { WaterConsumptionData } from "@shared/schema";
 
 export default function Home() {
@@ -33,6 +35,9 @@ export default function Home() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        {/* Privacy Banner */}
+        <PrivacyBanner />
+
         {/* File Upload Section */}
         <FileUpload onAnalysisComplete={handleAnalysisComplete} />
 
@@ -48,6 +53,9 @@ export default function Home() {
 
         {/* Methodology Section - shown even without data */}
         {!analysisData && <Methodology />}
+
+        {/* Privacy FAQ */}
+        <PrivacyFAQ />
 
         {/* Educational Footer */}
         <EducationalFooter />
