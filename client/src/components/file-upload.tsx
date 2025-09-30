@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
+import PrivacyIndicator from "@/components/privacy-indicator";
 import JSZip from "jszip";
 import sampleData from "@/assets/sample-conversation.json";
 
@@ -19,6 +20,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [processingComplete, setProcessingComplete] = useState(false);
 
   const processFile = useCallback(async (file: File) => {
     setIsProcessing(true);
@@ -66,15 +68,19 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       // Complete analysis
       setTimeout(() => {
         setIsProcessing(false);
+        setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        // Reset the complete indicator after a delay
+        setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
 
     } catch (err) {
       console.error('File processing error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to process file';
+      const errorMessage = err instanceof Error ? err.message : 'Local processing failed';
       setError(`${errorMessage}. Please ensure you're uploading a ChatGPT export ZIP or conversations.json.`);
       setIsProcessing(false);
       setProgress(0);
+      setProcessingComplete(false);
     }
   }, [onAnalysisComplete]);
 
@@ -102,7 +108,9 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
 
       setTimeout(() => {
         setIsProcessing(false);
+        setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
     } catch (err) {
       console.error('Sample data processing error:', err);
@@ -110,6 +118,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       setError(errorMessage);
       setIsProcessing(false);
       setProgress(0);
+      setProcessingComplete(false);
     }
   }, [onAnalysisComplete]);
 
@@ -178,7 +187,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
           </div>
           <div>
             {isProcessing ? (
-              <p className="text-base md:text-lg font-medium text-slate-700">Processing your file...</p>
+              <p className="text-base md:text-lg font-medium text-slate-700">Processing locally in your browser...</p>
             ) : (
               <>
                 <p className="text-base md:text-lg font-medium text-slate-700 px-4">Drop your ChatGPT export .zip or conversations.json here</p>
@@ -198,9 +207,12 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       {isProcessing && (
         <div className="mt-6">
           <Progress value={progress} className="h-2" />
-          <p className="text-sm text-slate-700 mt-2">Processing your conversation data...</p>
+          <p className="text-sm text-slate-700 mt-2">Processing locally... No data is being uploaded.</p>
         </div>
       )}
+
+      {/* Privacy Indicator */}
+      <PrivacyIndicator isProcessing={isProcessing} processingComplete={processingComplete} />
 
       {/* Error Alert */}
       {error && (
