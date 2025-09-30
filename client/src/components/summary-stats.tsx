@@ -1,5 +1,7 @@
-import { Droplet, MessageCircle, Calendar, ShowerHead, Coffee, Car } from "lucide-react";
+import { Droplet, MessageCircle, Calendar, ShowerHead, Coffee, Car, Info } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { WaterConsumptionData } from "@shared/schema";
 
 interface SummaryStatsProps {
@@ -14,7 +16,8 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
       value: `${data.totalWaterLiters.toFixed(1)}L`,
       badge: "TOTAL",
       bgColor: "bg-blue-100",
-      iconColor: "text-blue-500"
+      iconColor: "text-blue-500",
+      info: "Based on 0.5 liters per query, accounting for data center cooling, power generation water usage, and infrastructure requirements."
     },
     {
       icon: MessageCircle,
@@ -22,7 +25,8 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
       value: data.totalMessages.toLocaleString(),
       badge: "COUNT",
       bgColor: "bg-green-100",
-      iconColor: "text-green-500"
+      iconColor: "text-green-500",
+      info: "Total number of user queries (not including ChatGPT responses) in your conversation history."
     },
     {
       icon: Calendar,
@@ -30,7 +34,8 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
       value: data.daysActive.toString(),
       badge: "PERIOD",
       bgColor: "bg-purple-100",
-      iconColor: "text-purple-500"
+      iconColor: "text-purple-500",
+      info: "The number of unique days where you had conversations with ChatGPT."
     },
     {
       icon: ShowerHead,
@@ -38,7 +43,8 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
       value: `${data.comparisons.showerMinutes.toFixed(1)} min`,
       badge: "EQUIVALENT",
       bgColor: "bg-orange-100",
-      iconColor: "text-orange-500"
+      iconColor: "text-orange-500",
+      info: "Based on a typical shower head flow rate of 13.5L per minute. This helps visualize water consumption in relatable terms."
     }
   ];
 
@@ -75,7 +81,27 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
                   </span>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 hover:bg-slate-100"
+                          aria-label={`Information about ${stat.label}`}
+                        >
+                          <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80">
+                        <div className="space-y-2">
+                          <h4 className="font-semibold text-sm text-slate-900">{stat.label}</h4>
+                          <p className="text-sm text-slate-600">{stat.info}</p>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <p className="text-slate-700 text-sm">{stat.label}</p>
                 </div>
               </CardContent>
