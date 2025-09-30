@@ -120,40 +120,12 @@ export default function PrivacyFAQ() {
 
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                   <p className="font-semibold text-slate-900 mb-2">💻 Method 3: Inspect the Source Code</p>
-                  <p className="text-sm mb-2">
-                    This app is 100% open source. Review the actual code that processes your files:
+                  <p className="text-sm">
+                    This app is 100% open source. You can inspect the code that processes your files 
+                    (including <code className="text-xs bg-slate-100 px-1 rounded">conversation-parser.ts</code> and 
+                    <code className="text-xs bg-slate-100 px-1 rounded">water-calculator.ts</code>) on GitHub. 
+                    See the <strong>"Is this application open source?"</strong> section below for the repository link.
                   </p>
-                  <div className="space-y-2">
-                    <a 
-                      href="https://github.com/Quisharoo/chatgpt-water-impact/blob/main/client/src/lib/conversation-parser.ts" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
-                    >
-                      <Code className="w-3.5 h-3.5" />
-                      conversation-parser.ts - File parsing logic
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                    <a 
-                      href="https://github.com/Quisharoo/chatgpt-water-impact/blob/main/client/src/lib/water-calculator.ts" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 underline"
-                    >
-                      <Code className="w-3.5 h-3.5" />
-                      water-calculator.ts - Calculation logic
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                    <a 
-                      href="https://github.com/Quisharoo/chatgpt-water-impact" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-sm font-semibold text-green-700 hover:text-green-900 underline"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      View full repository on GitHub
-                    </a>
-                  </div>
                 </div>
               </div>
             </AccordionContent>
@@ -180,22 +152,20 @@ export default function PrivacyFAQ() {
                 <li>No analytics or tracking of conversation content</li>
               </ul>
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mt-3">
-                <p className="text-sm font-semibold text-slate-900 mb-2">Explore the Code:</p>
-                <div className="space-y-2">
-                  <a 
-                    href="https://github.com/Quisharoo/chatgpt-water-impact" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 underline"
-                  >
-                    <Code className="w-4 h-4" />
-                    View on GitHub
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                  <p className="text-xs text-slate-600">
-                    You can review, audit, fork, or run a modified version locally if you prefer.
-                  </p>
-                </div>
+                <p className="text-sm font-semibold text-slate-900 mb-2">🔓 Explore the Code</p>
+                <a 
+                  href="https://github.com/Quisharoo/chatgpt-water-impact" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 underline"
+                >
+                  <Code className="w-4 h-4" />
+                  View Repository on GitHub
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+                <p className="text-xs text-slate-600 mt-2">
+                  You can review, audit, fork, or run a modified version locally if you prefer.
+                </p>
               </div>
             </AccordionContent>
           </AccordionItem>

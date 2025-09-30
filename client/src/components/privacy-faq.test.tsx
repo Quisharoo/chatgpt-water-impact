@@ -64,22 +64,23 @@ describe('PrivacyFAQ', () => {
     });
   });
 
-  it('includes GitHub links in verification methods', async () => {
+  it('references code files without direct links in verification methods', async () => {
     const user = userEvent.setup();
-    render(<PrivacyFAQ />);
+    const { container } = render(<PrivacyFAQ />);
     
     const verificationQuestion = screen.getByText(/How can I verify no data is transmitted/i);
     await user.click(verificationQuestion);
     
     await waitFor(() => {
-      const githubLinks = screen.getAllByRole('link', { name: /conversation-parser\.ts/i });
-      expect(githubLinks.length).toBeGreaterThan(0);
-      expect(githubLinks[0]).toHaveAttribute('href', expect.stringContaining('github.com'));
-      expect(githubLinks[0]).toHaveAttribute('target', '_blank');
+      // Should mention the files without direct links
+      expect(container.textContent).toContain('conversation-parser.ts');
+      expect(container.textContent).toContain('water-calculator.ts');
+      // Should reference where to find the link - use container to check for presence
+      expect(container.textContent).toContain('Is this application open source?');
     });
   });
 
-  it('links to source code files in open source section', async () => {
+  it('has single primary GitHub link in open source section', async () => {
     const user = userEvent.setup();
     render(<PrivacyFAQ />);
     
@@ -87,7 +88,7 @@ describe('PrivacyFAQ', () => {
     await user.click(openSourceQuestion);
     
     await waitFor(() => {
-      const githubLink = screen.getByRole('link', { name: /View on GitHub/i });
+      const githubLink = screen.getByRole('link', { name: /View Repository on GitHub/i });
       expect(githubLink).toBeInTheDocument();
       expect(githubLink).toHaveAttribute('href', 'https://github.com/Quisharoo/chatgpt-water-impact');
       expect(githubLink).toHaveAttribute('target', '_blank');

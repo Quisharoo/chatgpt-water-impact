@@ -46,7 +46,7 @@ describe('PrivacyBanner', () => {
     });
   });
 
-  it('includes verification methods in the modal', async () => {
+  it('includes verification methods with cross-references', async () => {
     const user = userEvent.setup();
     render(<PrivacyBanner />);
     
@@ -57,10 +57,12 @@ describe('PrivacyBanner', () => {
       expect(screen.getByText(/Check Network Activity/i)).toBeInTheDocument();
       expect(screen.getByText(/Offline Test/i)).toBeInTheDocument();
       expect(screen.getByText(/Review the Code/i)).toBeInTheDocument();
+      // Verify the Open Source Transparency section exists as a heading
+      expect(screen.getAllByText(/Open Source Transparency/i).length).toBeGreaterThanOrEqual(1);
     });
   });
 
-  it('includes GitHub links in the modal', async () => {
+  it('includes primary GitHub link in Open Source Transparency section', async () => {
     const user = userEvent.setup();
     render(<PrivacyBanner />);
     
@@ -68,15 +70,14 @@ describe('PrivacyBanner', () => {
     await user.click(learnMoreButton);
     
     await waitFor(() => {
-      const githubLinks = screen.getAllByRole('link', { name: /github/i });
-      expect(githubLinks.length).toBeGreaterThan(0);
+      // Should have exactly ONE GitHub link in the Open Source Transparency section
+      const githubLinks = screen.getAllByRole('link', { name: /inspect the code on github/i });
+      expect(githubLinks).toHaveLength(1);
       
-      // Check that links point to the correct repository
-      githubLinks.forEach(link => {
-        expect(link).toHaveAttribute('href', expect.stringContaining('github.com/Quisharoo/chatgpt-water-impact'));
-        expect(link).toHaveAttribute('target', '_blank');
-        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-      });
+      // Verify the link properties
+      expect(githubLinks[0]).toHaveAttribute('href', 'https://github.com/Quisharoo/chatgpt-water-impact');
+      expect(githubLinks[0]).toHaveAttribute('target', '_blank');
+      expect(githubLinks[0]).toHaveAttribute('rel', 'noopener noreferrer');
     });
   });
 

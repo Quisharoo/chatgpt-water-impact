@@ -106,18 +106,10 @@ export default function PrivacyBanner() {
 
                       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                         <p className="font-semibold text-slate-900 mb-2">💻 Review the Code</p>
-                        <p className="text-sm text-slate-600 mb-2">
-                          This is 100% open source. Inspect the actual code:
+                        <p className="text-sm text-slate-600">
+                          This is 100% open source. You can inspect the actual code in the 
+                          <strong> Open Source Transparency</strong> section below.
                         </p>
-                        <a 
-                          href="https://github.com/Quisharoo/chatgpt-water-impact" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800 underline"
-                        >
-                          View source code on GitHub
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
                       </div>
                     </div>
                   </section>
