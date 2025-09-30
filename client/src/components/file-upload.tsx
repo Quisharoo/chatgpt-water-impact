@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { CloudUpload, FileText, AlertCircle } from "lucide-react";
+import { CloudUpload, FileText, AlertCircle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -8,6 +8,7 @@ import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
 import JSZip from "jszip";
+import sampleData from "@/assets/sample-conversation.json";
 
 interface FileUploadProps {
   onAnalysisComplete: (data: WaterConsumptionData) => void;
@@ -82,6 +83,35 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
     }
   }, [processFile]);
 
+  const loadSampleData = useCallback(() => {
+    setIsProcessing(true);
+    setProgress(0);
+    setError(null);
+
+    try {
+      setProgress(25);
+      const jsonText = JSON.stringify(sampleData);
+      setProgress(50);
+      
+      const conversationData = parseConversationFile(jsonText);
+      setProgress(75);
+
+      const waterData = calculateWaterConsumption(conversationData);
+      setProgress(100);
+
+      setTimeout(() => {
+        setIsProcessing(false);
+        onAnalysisComplete(waterData);
+      }, 300);
+    } catch (err) {
+      console.error('Sample data processing error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load sample data';
+      setError(errorMessage);
+      setIsProcessing(false);
+      setProgress(0);
+    }
+  }, [onAnalysisComplete]);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -152,6 +182,24 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{error}</AlertDescription>
         </Alert>
+      )}
+
+      {/* Sample Data Option */}
+      {!isProcessing && (
+        <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="text-center">
+            <p className="text-slate-600 mb-3 text-sm">Don't have your ChatGPT data handy?</p>
+            <Button
+              variant="outline"
+              onClick={loadSampleData}
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Try Sample Data
+            </Button>
+            <p className="text-slate-500 text-xs mt-2">View a demo with 50 sample conversations</p>
+          </div>
+        </div>
       )}
     </section>
   );

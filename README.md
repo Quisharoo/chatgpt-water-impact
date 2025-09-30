@@ -3,6 +3,20 @@ ChatGPT Water Impact Analyzer
 
 A simple, visual tool to analyze the water consumption impact of your ChatGPT usage. Drop in your ChatGPT export `.zip` (or `conversations.json`) and get instant insights into your environmental footprint.
 
+## 🚀 Live Demo
+
+**[View Live Demo →](https://watermarkai.vercel.app/)**
+
+> Upload your ChatGPT data or click **"Try Sample Data"** to see instant analytics without any setup!
+
+## 🖼️ Screenshot
+
+![ChatGPT Water Impact Analyzer Screenshot](.github/assets/screenshot.png)
+
+*Upload your ChatGPT export and instantly see your water consumption visualized with meaningful comparisons and analytics*
+
+> **Note:** Don't have your ChatGPT data? Try the **"Try Sample Data"** button to see a live demo!
+
 Why this exists
 ---------------
 
@@ -35,6 +49,21 @@ npm run dev
 ```
 
 Open `http://localhost:5173` and upload your `.zip` or `conversations.json`.
+
+Deployment
+----------
+
+This project is configured for easy deployment to Vercel:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+```
+
+Or click: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Quisharoo/watermarkai)
 
 Tech stack
 ---------
