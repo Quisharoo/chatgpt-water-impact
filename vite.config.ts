@@ -34,4 +34,12 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: [path.resolve(import.meta.dirname, 'vitest.setup.ts')],
+    include: [
+      path.resolve(import.meta.dirname, 'client/src/**/*.test.{ts,tsx}')
+    ]
+  },
 });

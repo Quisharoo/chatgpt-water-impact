@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
+import JSZip from "jszip";
 
 interface FileUploadProps {
   onAnalysisComplete: (data: WaterConsumptionData) => void;
@@ -23,20 +24,38 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
     setError(null);
 
     try {
-      // Validate file type
-      if (!file.name.endsWith('.json')) {
-        throw new Error('Please upload a JSON file');
+      const isJson = file.name.toLowerCase().endsWith('.json');
+      const isZip = file.name.toLowerCase().endsWith('.zip');
+
+      if (!isJson && !isZip) {
+        throw new Error('Please upload a ChatGPT export .zip or a conversations.json file');
       }
 
-      setProgress(20);
+      setProgress(15);
 
-      // Read file content
-      const text = await file.text();
-      setProgress(40);
+      let jsonText: string;
 
-      // Parse conversation data
-      const conversationData = parseConversationFile(text);
-      setProgress(70);
+      if (isZip) {
+        const zip = await JSZip.loadAsync(file);
+        setProgress(35);
+        const exact = zip.file(/(^|\/)conversations\.json$/i);
+        let entry = exact[0];
+        if (!entry) {
+          const anyJson = zip.file(/\.json$/i);
+          entry = anyJson[0];
+        }
+        if (!entry) {
+          throw new Error('Could not find conversations.json inside the ZIP export');
+        }
+        jsonText = await entry.async('string');
+        setProgress(55);
+      } else {
+        jsonText = await file.text();
+        setProgress(45);
+      }
+
+      const conversationData = parseConversationFile(jsonText);
+      setProgress(75);
 
       // Calculate water consumption
       const waterData = calculateWaterConsumption(conversationData);
@@ -46,12 +65,12 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       setTimeout(() => {
         setIsProcessing(false);
         onAnalysisComplete(waterData);
-      }, 500);
+      }, 300);
 
     } catch (err) {
       console.error('File processing error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to process file';
-      setError(`${errorMessage}. Please ensure you're uploading a ChatGPT conversation export file.`);
+      setError(`${errorMessage}. Please ensure you're uploading a ChatGPT export ZIP or conversations.json.`);
       setIsProcessing(false);
       setProgress(0);
     }
@@ -66,7 +85,9 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'application/json': ['.json']
+      'application/json': ['.json'],
+      'application/zip': ['.zip'],
+      'application/x-zip-compressed': ['.zip']
     },
     maxFiles: 1,
     disabled: isProcessing
@@ -75,8 +96,8 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your ChatGPT Conversation</h2>
-        <p className="text-slate-600">Upload your conversation.json file to analyze water consumption</p>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your ChatGPT Export</h2>
+        <p className="text-slate-600">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
       </div>
 
       {/* File Upload Zone */}
@@ -104,7 +125,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
               <p className="text-lg font-medium text-slate-700">Processing your file...</p>
             ) : (
               <>
-                <p className="text-lg font-medium text-slate-700">Drop your conversation.json file here</p>
+                <p className="text-lg font-medium text-slate-700">Drop your ChatGPT export .zip or conversations.json here</p>
                 <p className="text-slate-500 mt-1">or click to browse</p>
               </>
             )}
