@@ -260,33 +260,50 @@ export default function WaterChart({ data }: WaterChartProps) {
 
   return (
     <Card className="border border-slate-200">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+      <CardHeader className="space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <CardTitle className="text-xl font-bold text-slate-900">Water Consumption & Query Analytics</CardTitle>
-            <p className="text-slate-700">Track both water usage and conversation volume from your ChatGPT interactions</p>
+            <CardTitle className="text-lg md:text-xl font-bold text-slate-900">Water Consumption & Query Analytics</CardTitle>
+            <p className="text-sm md:text-base text-slate-700 mt-1">Track both water usage and conversation volume from your ChatGPT interactions</p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-slate-600">Time Period:</span>
-            <div className="flex space-x-2">
+          <div className="flex flex-col items-center md:items-end gap-2">
+            <label className="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+              Time Period
+            </label>
+            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 border border-slate-200 shadow-sm w-full md:w-auto">
               <Button
-                variant={viewMode === 'daily' ? 'default' : 'outline'}
+                variant={viewMode === 'daily' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('daily')}
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                  viewMode === 'daily' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Daily
               </Button>
               <Button
-                variant={viewMode === 'weekly' ? 'default' : 'outline'}
+                variant={viewMode === 'weekly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('weekly')}
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                  viewMode === 'weekly' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Weekly
               </Button>
               <Button
-                variant={viewMode === 'monthly' ? 'default' : 'outline'}
+                variant={viewMode === 'monthly' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('monthly')}
+                className={`rounded-md px-4 py-2 md:py-1.5 flex-1 md:flex-initial min-h-[44px] md:min-h-0 transition-all text-sm md:text-base ${
+                  viewMode === 'monthly' 
+                    ? 'bg-white shadow-sm hover:bg-white text-slate-900 font-semibold' 
+                    : 'hover:bg-slate-200 text-slate-600'
+                }`}
               >
                 Monthly
               </Button>
