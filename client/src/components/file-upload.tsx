@@ -9,6 +9,7 @@ import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
 import PrivacyIndicator from "@/components/privacy-indicator";
+import { useToast } from "@/hooks/use-toast";
 import JSZip from "jszip";
 import sampleData from "@/assets/sample-conversation.json";
 
@@ -17,6 +18,7 @@ interface FileUploadProps {
 }
 
 export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
+  const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -70,6 +72,10 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
         setIsProcessing(false);
         setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        toast({
+          title: "Analysis Complete",
+          description: "Your data was processed locally—nothing was transmitted.",
+        });
         // Reset the complete indicator after a delay
         setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
@@ -78,11 +84,16 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
       console.error('File processing error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Local processing failed';
       setError(`${errorMessage}. Please ensure you're uploading a ChatGPT export ZIP or conversations.json.`);
+      toast({
+        title: "Processing Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
       setIsProcessing(false);
       setProgress(0);
       setProcessingComplete(false);
     }
-  }, [onAnalysisComplete]);
+  }, [onAnalysisComplete, toast]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -110,17 +121,26 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
         setIsProcessing(false);
         setProcessingComplete(true);
         onAnalysisComplete(waterData);
+        toast({
+          title: "Sample Data Loaded",
+          description: "Try out the analysis with example ChatGPT conversation data.",
+        });
         setTimeout(() => setProcessingComplete(false), 100);
       }, 300);
     } catch (err) {
       console.error('Sample data processing error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to load sample data';
       setError(errorMessage);
+      toast({
+        title: "Failed to Load Sample Data",
+        description: errorMessage,
+        variant: "destructive",
+      });
       setIsProcessing(false);
       setProgress(0);
       setProcessingComplete(false);
     }
-  }, [onAnalysisComplete]);
+  }, [onAnalysisComplete, toast]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -197,7 +217,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             )}
           </div>
           {!isProcessing && (
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] px-6 text-base font-semibold">
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] px-6 text-base font-semibold active:scale-[0.98] transition-transform touch-manipulation">
               Choose File
             </Button>
           )}
@@ -231,7 +251,7 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             <Button
               variant="outline"
               onClick={loadSampleData}
-              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 active:scale-[0.98] transition-transform touch-manipulation min-h-[44px]"
             >
               <Sparkles className="w-4 h-4 mr-2" />
               Try Sample Data

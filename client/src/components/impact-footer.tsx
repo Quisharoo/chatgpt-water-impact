@@ -3,22 +3,38 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WaterConsumptionData } from "@shared/schema";
 import { downloadCSV, downloadFile } from "@/lib/download-utils";
+import { useToast } from "@/hooks/use-toast";
 
 interface ImpactFooterProps {
   data: WaterConsumptionData;
 }
 
 export default function ImpactFooter({ data }: ImpactFooterProps) {
+  const { toast } = useToast();
+
   const exportCSV = () => {
-    const rows = [
-      ['Date', 'Water Liters', 'Messages'],
-      ...data.dailyConsumption.map(d => [d.date, d.waterLiters, d.messages])
-    ];
-    downloadCSV(rows, 'chatgpt-water-impact.csv');
+    try {
+      const rows = [
+        ['Date', 'Water Liters', 'Messages'],
+        ...data.dailyConsumption.map(d => [d.date, d.waterLiters, d.messages])
+      ];
+      downloadCSV(rows, 'chatgpt-water-impact.csv');
+      toast({
+        title: "CSV Exported",
+        description: "Your water consumption data has been downloaded successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Export Failed",
+        description: "Unable to export CSV. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const exportReport = () => {
-    const reportContent = `
+    try {
+      const reportContent = `
 ChatGPT Water Impact Analysis Report
 
 Summary:
@@ -35,7 +51,18 @@ Daily Consumption:
 ${data.dailyConsumption.map(d => `${d.date}: ${d.waterLiters.toFixed(1)}L (${d.messages} messages)`).join('\n')}
     `.trim();
 
-    downloadFile(reportContent, 'chatgpt-water-impact-report.txt');
+      downloadFile(reportContent, 'chatgpt-water-impact-report.txt');
+      toast({
+        title: "Report Downloaded",
+        description: "Your water impact report has been saved successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Export Failed",
+        description: "Unable to export report. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -72,14 +99,14 @@ ${data.dailyConsumption.map(d => `${d.date}: ${d.waterLiters.toFixed(1)}L (${d.m
               <Button 
                 variant="outline" 
                 onClick={exportCSV}
-                className="w-full bg-white text-slate-900 hover:bg-slate-100 border-0"
+                className="w-full bg-white text-slate-900 hover:bg-slate-100 border-0 min-h-[44px] active:scale-[0.98] transition-transform touch-manipulation"
               >
                 <FileSpreadsheet className="w-4 h-4 mr-2" />
                 Export CSV
               </Button>
               <Button 
                 onClick={exportReport}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white min-h-[44px] active:scale-[0.98] transition-transform touch-manipulation"
               >
                 <FileText className="w-4 h-4 mr-2" />
                 Export Report

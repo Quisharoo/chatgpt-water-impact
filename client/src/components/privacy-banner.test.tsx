@@ -31,7 +31,7 @@ describe('PrivacyBanner', () => {
     });
   });
 
-  it('displays detailed privacy information in the modal', async () => {
+  it('displays essential privacy information in the modal', async () => {
     const user = userEvent.setup();
     render(<PrivacyBanner />);
     
@@ -41,12 +41,12 @@ describe('PrivacyBanner', () => {
     await waitFor(() => {
       expect(screen.getByText('100% Client-Side Processing')).toBeInTheDocument();
       expect(screen.getByText('How It Works')).toBeInTheDocument();
-      expect(screen.getByText('Technical Verification')).toBeInTheDocument();
       expect(screen.getByText(/What We Don't Collect/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bottom line:/i)).toBeInTheDocument();
     });
   });
 
-  it('includes verification methods with cross-references', async () => {
+  it('includes call-to-action for detailed verification with FAQ reference', async () => {
     const user = userEvent.setup();
     render(<PrivacyBanner />);
     
@@ -54,15 +54,13 @@ describe('PrivacyBanner', () => {
     await user.click(learnMoreButton);
     
     await waitFor(() => {
-      expect(screen.getByText(/Check Network Activity/i)).toBeInTheDocument();
-      expect(screen.getByText(/Offline Test/i)).toBeInTheDocument();
-      expect(screen.getByText(/Review the Code/i)).toBeInTheDocument();
-      // Verify the Open Source Transparency section exists as a heading
-      expect(screen.getAllByText(/Open Source Transparency/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText(/Want to verify this yourself/i)).toBeInTheDocument();
+      expect(screen.getByText(/Privacy & Security FAQ/i)).toBeInTheDocument();
+      expect(screen.getByText(/detailed verification methods/i)).toBeInTheDocument();
     });
   });
 
-  it('includes primary GitHub link in Open Source Transparency section', async () => {
+  it('includes GitHub link for code inspection', async () => {
     const user = userEvent.setup();
     render(<PrivacyBanner />);
     
@@ -70,8 +68,8 @@ describe('PrivacyBanner', () => {
     await user.click(learnMoreButton);
     
     await waitFor(() => {
-      // Should have exactly ONE GitHub link in the Open Source Transparency section
-      const githubLinks = screen.getAllByRole('link', { name: /inspect the code on github/i });
+      // Should have ONE GitHub link
+      const githubLinks = screen.getAllByRole('link', { name: /view source code on github/i });
       expect(githubLinks).toHaveLength(1);
       
       // Verify the link properties

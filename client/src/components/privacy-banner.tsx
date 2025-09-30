@@ -23,7 +23,7 @@ export default function PrivacyBanner() {
             <Button 
               variant="outline" 
               size="sm"
-              className="bg-white border-green-300 text-green-700 hover:bg-green-50 hover:text-green-900 hover:border-green-400 font-semibold shadow-sm"
+              className="bg-white border-green-300 text-green-700 hover:bg-green-50 hover:text-green-900 hover:border-green-400 font-semibold shadow-sm min-h-[44px] md:min-h-0 active:scale-[0.98] transition-transform touch-manipulation"
             >
               <Info className="w-4 h-4 mr-1.5" />
               Learn more
@@ -75,72 +75,6 @@ export default function PrivacyBanner() {
 
                   <section>
                     <h3 className="font-semibold text-slate-900 text-base mb-2">
-                      Technical Verification
-                    </h3>
-                    <p className="text-slate-600 mb-3">
-                      Don't just take our word for it—verify it yourself:
-                    </p>
-                    <div className="space-y-4">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p className="font-semibold text-slate-900 mb-2">🔍 Check Network Activity</p>
-                        <ol className="list-decimal pl-5 space-y-1 text-sm text-slate-600">
-                          <li>Right-click anywhere on this page → "Inspect" (or press F12)</li>
-                          <li>Click the "Network" tab at the top</li>
-                          <li>Upload your file and watch the network requests</li>
-                          <li>You'll see ZERO POST/PUT requests with your data</li>
-                        </ol>
-                        <p className="text-xs text-slate-500 mt-2 italic">
-                          Only static files (HTML, CSS, JS) are loaded—no data uploads.
-                        </p>
-                      </div>
-
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                        <p className="font-semibold text-slate-900 mb-2">✈️ Offline Test</p>
-                        <ol className="list-decimal pl-5 space-y-1 text-sm text-slate-600">
-                          <li>Load this page normally</li>
-                          <li>Turn on airplane mode / disconnect WiFi</li>
-                          <li>Upload and analyze your file</li>
-                          <li>It still works! (Because everything runs locally)</li>
-                        </ol>
-                      </div>
-
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <p className="font-semibold text-slate-900 mb-2">💻 Review the Code</p>
-                        <p className="text-sm text-slate-600">
-                          This is 100% open source. You can inspect the actual code in the 
-                          <strong> Open Source Transparency</strong> section below.
-                        </p>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <Code className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-slate-900 text-base mb-2">
-                          Open Source Transparency
-                        </h3>
-                        <p className="text-slate-600 text-sm mb-3">
-                          The complete source code is available for inspection. All data processing 
-                          logic is contained in client-side TypeScript files that run in your browser.
-                        </p>
-                        <a 
-                          href="https://github.com/Quisharoo/chatgpt-water-impact" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 underline"
-                        >
-                          <Code className="w-4 h-4" />
-                          Inspect the code on GitHub
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section>
-                    <h3 className="font-semibold text-slate-900 text-base mb-2">
                       What We Don't Collect
                     </h3>
                     <ul className="list-disc pl-5 space-y-1 text-slate-600">
@@ -158,6 +92,26 @@ export default function PrivacyBanner() {
                       provide insights without compromising your privacy. Everything happens 
                       locally, in your control.
                     </p>
+                  </div>
+
+                  <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 mt-4">
+                    <p className="text-blue-900 text-sm font-semibold mb-2">
+                      Want to verify this yourself?
+                    </p>
+                    <p className="text-blue-800 text-sm mb-3">
+                      Check our <strong>Privacy & Security FAQ</strong> below for detailed verification 
+                      methods, offline testing instructions, and open-source code links.
+                    </p>
+                    <a 
+                      href="https://github.com/Quisharoo/chatgpt-water-impact" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 underline"
+                    >
+                      <Code className="w-4 h-4" />
+                      View source code on GitHub
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
                   </div>
                 </div>
               </DialogDescription>
