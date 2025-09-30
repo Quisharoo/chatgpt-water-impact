@@ -57,13 +57,9 @@
   }
 }
 
-/* Custom styles for the water footprint app */
+/* Custom styles for the water impact analyzer */
 .gradient-blue-green {
   background: linear-gradient(135deg, hsl(221, 83%, 53%) 0%, hsl(142, 71%, 45%) 100%);
-}
-
-.gradient-green-blue {
-  background: linear-gradient(135deg, hsl(142, 76%, 36%) 0%, hsl(221, 83%, 53%) 100%);
 }
 
 .water-droplet-animation {
