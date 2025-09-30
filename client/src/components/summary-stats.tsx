@@ -64,14 +64,14 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Main Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {stats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
-            <Card key={index} className="border border-slate-200">
-              <CardContent className="p-6">
+            <Card key={index} className="border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <CardContent className="p-5 md:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
                     <IconComponent className={`${stat.iconColor} text-xl`} />
@@ -111,21 +111,25 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
       </div>
 
       {/* Additional Comparisons */}
-      <Card className="border border-slate-200 bg-gradient-to-r from-slate-50 to-blue-50">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-center gap-8">
-            <span className="text-sm text-slate-600 font-medium">Also equivalent to:</span>
-            {comparisons.map((comparison, index) => {
-              const IconComponent = comparison.icon;
-              return (
-                <div key={index} className="flex items-center gap-2">
-                  <IconComponent className={`${comparison.iconColor} w-5 h-5`} />
-                  <span className="text-slate-700">
-                    <strong className="text-slate-900">{comparison.value}</strong> {comparison.label}
-                  </span>
-                </div>
-              );
-            })}
+      <Card className="border border-slate-200 bg-gradient-to-r from-slate-50 to-blue-50 shadow-sm">
+        <CardContent className="p-5 md:p-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-center gap-4 md:gap-8">
+            <span className="text-sm text-slate-600 font-semibold md:font-medium">Also equivalent to:</span>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              {comparisons.map((comparison, index) => {
+                const IconComponent = comparison.icon;
+                return (
+                  <div key={index} className="flex items-center gap-3 bg-white rounded-lg px-4 py-3 md:bg-transparent md:px-0 md:py-0 shadow-sm md:shadow-none">
+                    <div className={`w-10 h-10 md:w-auto md:h-auto flex items-center justify-center md:block`}>
+                      <IconComponent className={`${comparison.iconColor} w-6 h-6 md:w-5 md:h-5`} />
+                    </div>
+                    <span className="text-slate-700 text-sm md:text-base">
+                      <strong className="text-slate-900 text-lg md:text-base">{comparison.value}</strong> {comparison.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </CardContent>
       </Card>

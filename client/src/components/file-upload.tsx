@@ -125,16 +125,16 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   });
 
   return (
-    <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-      <div className="text-center mb-8">
+    <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-8">
+      <div className="text-center mb-6 md:mb-8">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <h2 className="text-2xl font-bold text-slate-900">Upload Your ChatGPT Export</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900">Upload Your ChatGPT Export</h2>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 hover:bg-slate-100"
+                className="h-9 w-9 md:h-8 md:w-8 p-0 hover:bg-slate-100 flex-shrink-0"
                 aria-label="How to get your ChatGPT export"
               >
                 <HelpCircle className="h-5 w-5 text-slate-400 hover:text-slate-600" />
@@ -153,41 +153,41 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
             </TooltipContent>
           </Tooltip>
         </div>
-        <p className="text-slate-700">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
+        <p className="text-sm md:text-base text-slate-700 px-4 md:px-0">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
       </div>
 
       {/* File Upload Zone */}
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors cursor-pointer ${
+        className={`border-2 border-dashed rounded-xl p-8 md:p-12 text-center transition-colors cursor-pointer min-h-[200px] flex items-center justify-center ${
           isDragActive 
             ? 'border-blue-400 bg-blue-50' 
             : isProcessing 
             ? 'border-slate-300 bg-slate-50 cursor-not-allowed'
-            : 'border-slate-300 hover:border-blue-400 hover:bg-blue-50'
+            : 'border-slate-300 hover:border-blue-400 hover:bg-blue-50 active:bg-blue-100'
         }`}
       >
         <input {...getInputProps()} aria-label="Upload ChatGPT export ZIP or JSON file" />
-        <div className="space-y-4">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+        <div className="space-y-4 w-full">
+          <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
             {isProcessing ? (
-              <FileText className="text-blue-500 text-2xl animate-pulse" />
+              <FileText className="text-blue-500 text-2xl md:text-3xl animate-pulse" />
             ) : (
-              <CloudUpload className="text-blue-500 text-2xl" />
+              <CloudUpload className="text-blue-500 text-2xl md:text-3xl" />
             )}
           </div>
           <div>
             {isProcessing ? (
-              <p className="text-lg font-medium text-slate-700">Processing your file...</p>
+              <p className="text-base md:text-lg font-medium text-slate-700">Processing your file...</p>
             ) : (
               <>
-                <p className="text-lg font-medium text-slate-700">Drop your ChatGPT export .zip or conversations.json here</p>
-                <p className="text-slate-600 mt-1">or click to browse</p>
+                <p className="text-base md:text-lg font-medium text-slate-700 px-4">Drop your ChatGPT export .zip or conversations.json here</p>
+                <p className="text-sm md:text-base text-slate-600 mt-2">or click to browse</p>
               </>
             )}
           </div>
           {!isProcessing && (
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white">
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white min-h-[44px] px-6 text-base font-semibold">
               Choose File
             </Button>
           )}
