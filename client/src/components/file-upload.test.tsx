@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import FileUpload from './file-upload';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import * as parser from '@/lib/conversation-parser';
 import * as calculator from '@/lib/water-calculator';
 
@@ -53,7 +54,11 @@ describe('FileUpload', () => {
     } as any);
     vi.spyOn(calculator, 'calculateWaterConsumption').mockReturnValue({} as any);
 
-    const { container } = render(<FileUpload onAnalysisComplete={onComplete} /> as any);
+    const { container } = render(
+      <TooltipProvider>
+        <FileUpload onAnalysisComplete={onComplete} />
+      </TooltipProvider>
+    );
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const file: any = {
@@ -84,7 +89,11 @@ describe('FileUpload', () => {
     } as any);
     vi.spyOn(calculator, 'calculateWaterConsumption').mockReturnValue({} as any);
 
-    const { container } = render(<FileUpload onAnalysisComplete={onComplete} /> as any);
+    const { container } = render(
+      <TooltipProvider>
+        <FileUpload onAnalysisComplete={onComplete} />
+      </TooltipProvider>
+    );
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
 
     const zipFile: any = { name: 'chatgpt-export.zip', type: 'application/zip' };

@@ -266,28 +266,31 @@ export default function WaterChart({ data }: WaterChartProps) {
             <CardTitle className="text-xl font-bold text-slate-900">Water Consumption & Query Analytics</CardTitle>
             <p className="text-slate-700">Track both water usage and conversation volume from your ChatGPT interactions</p>
           </div>
-          <div className="flex space-x-2">
-            <Button
-              variant={viewMode === 'daily' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setViewMode('daily')}
-            >
-              Daily
-            </Button>
-            <Button
-              variant={viewMode === 'weekly' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setViewMode('weekly')}
-            >
-              Weekly
-            </Button>
-            <Button
-              variant={viewMode === 'monthly' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setViewMode('monthly')}
-            >
-              Monthly
-            </Button>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-slate-600">Time Period:</span>
+            <div className="flex space-x-2">
+              <Button
+                variant={viewMode === 'daily' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('daily')}
+              >
+                Daily
+              </Button>
+              <Button
+                variant={viewMode === 'weekly' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('weekly')}
+              >
+                Weekly
+              </Button>
+              <Button
+                variant={viewMode === 'monthly' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('monthly')}
+              >
+                Monthly
+              </Button>
+            </div>
           </div>
         </div>
       </CardHeader>

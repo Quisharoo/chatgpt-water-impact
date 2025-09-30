@@ -1,9 +1,10 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { CloudUpload, FileText, AlertCircle, Sparkles } from "lucide-react";
+import { CloudUpload, FileText, AlertCircle, Sparkles, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { parseConversationFile } from "@/lib/conversation-parser";
 import { calculateWaterConsumption } from "@/lib/water-calculator";
 import { WaterConsumptionData } from "@shared/schema";
@@ -126,7 +127,32 @@ export default function FileUpload({ onAnalysisComplete }: FileUploadProps) {
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your ChatGPT Export</h2>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <h2 className="text-2xl font-bold text-slate-900">Upload Your ChatGPT Export</h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 hover:bg-slate-100"
+                aria-label="How to get your ChatGPT export"
+              >
+                <HelpCircle className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">
+              <div className="space-y-2">
+                <p className="font-semibold text-sm">How to get your ChatGPT data:</p>
+                <ol className="text-sm space-y-1 list-decimal list-inside">
+                  <li>Open ChatGPT → Settings</li>
+                  <li>Go to Data Controls → Export data</li>
+                  <li>Check your email for the download link</li>
+                  <li>Upload the .zip file here</li>
+                </ol>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </div>
         <p className="text-slate-700">Upload your ChatGPT export .zip (preferred) or a conversations.json file</p>
       </div>
 
