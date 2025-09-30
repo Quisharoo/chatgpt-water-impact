@@ -25,7 +25,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-900">ChatGPT Water Footprint</h1>
-              <p className="text-slate-600 text-sm">Analyze the environmental impact of your AI conversations</p>
+              <p className="text-slate-700 text-sm">Analyze the environmental impact of your AI conversations</p>
             </div>
           </div>
         </div>

@@ -53,13 +53,13 @@ export default function SummaryStats({ data }: SummaryStatsProps) {
                 <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
                   <IconComponent className={`${stat.iconColor} text-xl`} />
                 </div>
-                <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded">
+                <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded">
                   {stat.badge}
                 </span>
               </div>
               <div>
                 <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-                <p className="text-slate-600 text-sm">{stat.label}</p>
+                <p className="text-slate-700 text-sm">{stat.label}</p>
               </div>
             </CardContent>
           </Card>
