@@ -15,7 +15,7 @@ export default function PrivacyIndicator({ isProcessing, processingComplete }: P
       setShowComplete(true);
       const timer = setTimeout(() => {
         setShowComplete(false);
-      }, 5000);
+      }, 8000); // Increased from 5s to 8s for better visibility
       return () => clearTimeout(timer);
     }
   }, [processingComplete]);
@@ -23,12 +23,12 @@ export default function PrivacyIndicator({ isProcessing, processingComplete }: P
   if (!isProcessing && !showComplete) return null;
 
   return (
-    <Alert className={`mt-4 ${showComplete ? 'bg-green-50 border-green-200' : 'bg-blue-50 border-blue-200'}`}>
+    <Alert className={`mt-4 ${showComplete ? 'bg-green-50 border-2 border-green-300 shadow-md' : 'bg-blue-50 border-blue-200'}`}>
       {showComplete ? (
         <>
-          <CheckCircle className="h-4 w-4 text-green-600" />
-          <AlertDescription className="text-green-900 font-medium">
-            ✓ Analysis complete. No data left your device.
+          <CheckCircle className="h-5 w-5 text-green-600" />
+          <AlertDescription className="text-green-900 font-bold text-base">
+            ✓ Analysis complete—your data was never transmitted.
           </AlertDescription>
         </>
       ) : (
