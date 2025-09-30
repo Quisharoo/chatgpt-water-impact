@@ -2,6 +2,7 @@ import { ShowerHead, Coffee, Car, Leaf, FileSpreadsheet, FileText, Download } fr
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WaterConsumptionData } from "@shared/schema";
+import { downloadCSV, downloadFile } from "@/lib/download-utils";
 
 interface EnvironmentalComparisonsProps {
   data: WaterConsumptionData;
@@ -11,7 +12,7 @@ export default function EnvironmentalComparisons({ data }: EnvironmentalComparis
   const comparisons = [
     {
       icon: ShowerHead,
-      label: "ShowerHead time",
+      label: "Shower time",
       value: `${data.comparisons.showerMinutes.toFixed(1)} min`,
       bgColor: "bg-blue-50",
       textColor: "text-blue-600",
@@ -36,23 +37,16 @@ export default function EnvironmentalComparisons({ data }: EnvironmentalComparis
   ];
 
   const exportCSV = () => {
-    const csvContent = [
+    const rows = [
       ['Date', 'Water Liters', 'Messages'],
       ...data.dailyConsumption.map(d => [d.date, d.waterLiters, d.messages])
-    ].map(row => row.join(',')).join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'chatgpt-water-consumption.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+    ];
+    downloadCSV(rows, 'chatgpt-water-impact.csv');
   };
 
   const exportReport = () => {
     const reportContent = `
-ChatGPT Water Footprint Analysis Report
+ChatGPT Water Impact Analysis Report
 
 Summary:
 - Total Water Consumed: ${data.totalWaterLiters.toFixed(1)} liters
@@ -61,7 +55,7 @@ Summary:
 - Equivalent Water Bottles: ${data.waterBottles}
 
 Environmental Comparisons:
-- ShowerHead Time: ${data.comparisons.showerMinutes.toFixed(1)} minutes
+- Shower Time: ${data.comparisons.showerMinutes.toFixed(1)} minutes
 - Cups of Coffee: ${data.comparisons.coffeeCups.toLocaleString()}
 - Car Wash Cycles: ${data.comparisons.carWashes.toFixed(1)}
 
@@ -69,13 +63,7 @@ Daily Consumption:
 ${data.dailyConsumption.map(d => `${d.date}: ${d.waterLiters.toFixed(1)}L (${d.messages} messages)`).join('\n')}
     `.trim();
 
-    const blob = new Blob([reportContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'chatgpt-water-footprint-report.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadFile(reportContent, 'chatgpt-water-impact-report.txt');
   };
 
   return (
@@ -105,7 +93,7 @@ ${data.dailyConsumption.map(d => `${d.date}: ${d.waterLiters.toFixed(1)}L (${d.m
 
       {/* Educational Info & Export */}
       <div className="space-y-6">
-        <Card className="gradient-green-blue border border-green-200">
+        <Card className="gradient-blue-green border border-green-200">
           <CardContent className="p-8">
             <div className="flex items-center space-x-3 mb-4">
               <Leaf className="text-white text-xl" />

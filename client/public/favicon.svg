@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Water droplet shape -->
+  <path d="M50 10 C50 10, 20 45, 20 60 C20 77, 33 90, 50 90 C67 90, 80 77, 80 60 C80 45, 50 10, 50 10 Z" 
+        fill="url(#waterGradient)" 
+        stroke="#1e40af" 
+        stroke-width="2"/>
+  <!-- Highlight/shine effect -->
+  <ellipse cx="40" cy="40" rx="8" ry="12" fill="white" opacity="0.4"/>
+</svg>

@@ -1,8 +1,8 @@
-# ChatGPT Water Footprint Analyzer
+# ChatGPT Water Impact Analyzer
 
 ## Overview
 
-This is a React-based web application that analyzes the environmental impact of ChatGPT conversations by calculating water consumption. Users can upload their conversation JSON files to get insights about their AI usage's environmental footprint through interactive charts and comparisons.
+This is a React-based web application that analyzes the water consumption impact of ChatGPT conversations. Users can upload their conversation export files (ZIP or JSON) to get insights about their ChatGPT usage's water footprint through interactive charts and comparisons.
 
 ## Recent Changes (January 27, 2025)
 
